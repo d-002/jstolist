@@ -1,0 +1,46 @@
+<html>
+	<head>
+		<title>JStoList</title>
+		<link rel="stylesheet" href="style.css">
+		<script src="script.js"></script>
+	</head>
+
+	<body onload="javascript:init()">
+		<div id="selected"></div>
+
+		<div id="header">
+			<noscript>Please activate Javascript</noscript>
+			<h1>JStoList</h1>
+			<p>Your Javascript Eisenhower Matrix</p>
+			<div id="buttons">
+				<a href="javascript:_export()"><img src="export.png"></a>
+				<a href="javascript:_import()"><img src="import.png"></a>
+				<a href="javascript:showHelp()"><img src="help.png"></a>
+			</div>
+		</div>
+
+		<div id="main">
+			<div id="left"></div>
+			<div id="right"></div>
+		</div>
+
+		<div id="footer">
+			<p>This website uses cookies to allow you to store your data. By using this website, you agree to their use.</p>
+			<a href="javascript:hideFooter()">OK</a>
+		</div>
+
+		<div id="help">
+			<div>
+				<h2>JStoList - help</h2>
+				<p>This Javascript todo list makes organizing tasks easier!</p>
+				<p>You will be able to sort your tasks in different areas, depending on their importance and urgency, according to the Eisenhower Matrix model.</p>
+				<p>To add a task, click the + button in your desired area. You will be able to edit it by typing in the created block. You can also edit previous blocks.</p>
+				<p>To delete a block, double-click it.</p>
+				<p>You can drag and drop blocks into different areas. You can't reorder them inside a certain area.</p>
+				<p>Your data is safely saved in cookies, which makes them necessary for this website to work. By continuing to use this website, you agree to their use.</p>
+				<p>You can export the content of the page if necessary, for example to export them to another device. To do that, you can also import a pre-exported file.</p>
+				<a href="javascript:hideHelp()">Close</a>
+			</div>
+		</div>
+	</body>
+</html>
