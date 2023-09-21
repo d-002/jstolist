@@ -57,6 +57,7 @@ function __import(elt, event) {
 		})
 	});
 	reader.readAsText(file);
+	unsavep();
 }
 
 function restore() {
