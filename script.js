@@ -209,5 +209,3 @@ function init() {
 	window.addEventListener("mousemove", updateMousePos);
 	window.setInterval(autosave, 5000);
 }
-
-// changelog: better save mechanics, dragging, update readme, manual save
