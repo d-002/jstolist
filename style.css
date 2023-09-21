@@ -93,10 +93,11 @@ span strong {
 	background-color: rgba(255, 255, 255, 0.5);
 }
 
-textarea {
+textarea, #drag {
 	overflow: hidden;
 	resize: none;
 	min-width: 20px;
+	cursor: pointer;
 
 	text-align: center;
 	text-decoration: none;
@@ -221,7 +222,7 @@ h1 {
 #footer a:hover, #help a:hover { border: 1px solid #777 }
 #footer a:active, #help a:active { background-color: #999 }
 
-#help {
+#help, #import-info {
 	display: none;
 	position: fixed;
 	top: 0;
@@ -232,7 +233,7 @@ h1 {
 	backdrop-filter: blur(3px);
 }
 
-#help>div {
+#help>div, #import-info>div {
 	position: fixed;
 	top: 50%;
 	left: 50%;
@@ -252,3 +253,17 @@ h2 {
 	font-weight: 100;
 	font-size: 30px;
 }
+
+#drag {
+	display: none;
+	position: fixed;
+	top: var(--y);
+	left: var(--x);
+	transform: translate(-50%, -50%);
+
+	width: 180px;
+	height: 60px;
+	align-items: center;
+	justify-content: center;
+}
+

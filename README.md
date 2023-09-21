@@ -7,9 +7,9 @@ You will be able to sort your tasks in different areas, depending on their impor
 
 To add a task, click the + button in your desired area. You will be able to edit it by typing in the created block. You can also edit previous blocks.
 
-To delete a block, double-click it.
+You can drag and drop blocks into different areas. To do this, you must click once to select a block, then once again to drop it.
 
-You can drag and drop blocks into different areas. You can't reorder them inside a certain area.
+You can reorder blocks inside a certain area by selecting and placing a block you want to be put first. To delete a block, double-click it.
 
 Your data is safely saved in local storage, though by erasing it you will also erase your data.
 

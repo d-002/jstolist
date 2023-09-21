@@ -1,8 +1,21 @@
 let divs = [];
 let todo = {0: [], 1: [], 2: [], 3: []};
-let selectdiv, helpdiv, footerdiv, statep;
+let selectdiv, helpdiv, footerdiv, dragdiv, statep;
+
+let mousePos = [0, 0];
+let interval;
+let dragging = false;
 
 let saved;
+
+function updateMousePos(evt) {
+  let bound = document.body.getBoundingClientRect();
+
+  let x = evt.clientX - bound.left - document.body.clientLeft;
+  let y = evt.clientY - bound.top - document.body.clientTop;
+
+  mousePos = [x, y];
+}
 
 function _export() {
 	update(); // save to use pre-formatted localStorage data
@@ -82,7 +95,7 @@ function unsavep() {
 	statep.className = "";
 }
 
-function update() {
+function autosave() {
 	if (!saved) {
 		for (let i = 0; i < 4; i++) {
 			let children = divs[i].children;
@@ -129,11 +142,39 @@ function remove(i, elt) {
 	unsavep();
 }
 
-function handleClick(event) {
+function handleRemove(event) {
 	if (event.target.tagName == "TEXTAREA") {
 		let id = event.target.parentNode.parentNode.id;
 		remove(parseInt(id[1]), event.target.parentNode);
 	}
+}
+
+function handleDragDropClick(event) {
+	if (dragging) {
+		let bound = document.body.getBoundingClientRect();
+		let i = 2*(mousePos[0] > bound.width/2) + (mousePos[1] > bound.height/2);
+		add(i).value = dragdiv.innerHTML;
+
+		window.clearInterval(interval);
+		interval = null;
+		dragdiv.innerHTML = "";
+		dragdiv.style = "";
+		dragging = false;
+	} else {
+		if (event.target.tagName == "TEXTAREA") {
+			dragdiv.innerHTML = event.target.value;
+
+			let id = event.target.parentNode.parentNode.id;
+			remove(parseInt(id[1]), event.target.parentNode);
+
+			interval = window.setInterval(updateDrag, 16);
+			dragging = true;
+		}
+	}
+}
+
+function updateDrag() {
+	dragdiv.style = "display: flex; --x: "+mousePos[0]+"; --y: "+mousePos[1];
 }
 
 function init() {
@@ -142,6 +183,7 @@ function init() {
 	selectdiv = document.getElementById("selected");
 	helpdiv = document.getElementById("help");
 	footerdiv = document.getElementById("footer");
+	dragdiv = document.getElementById("drag");
 	statep = document.getElementById("state");
 
 	let text = ["More urgent, less important - <strong>DELEGATE</strong>",
@@ -161,7 +203,11 @@ function init() {
 	}
 
 	restore();
-	document.body.addEventListener("keyup", unsavep);
-	document.body.addEventListener("dblclick", handleClick);
-	window.setInterval(update, 5000);
+	document.body.addEventListener("keyup", (event) => {if (event.key.length == 1) unsavep()});
+	document.body.addEventListener("tripleclick", handleRemove);
+	document.body.addEventListener("dblclick", handleDragDropClick);
+	window.addEventListener("mousemove", updateMousePos);
+	window.setInterval(autosave, 5000);
 }
+
+// changelog: better save mechanics, dragging, update readme, manual save
