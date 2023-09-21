@@ -25,14 +25,45 @@ function _export() {
 }
 
 function _import() {
-	
+	let input = document.createElement("input");
+	input.style.display = "none";
+	document.body.appendChild(input);
+	input.type = "file";
+	input.click();
+	input.addEventListener("change", (event) => { __import(input, event) });
+}
+
+function __import(elt, event) {
+	elt.remove();
+	let file = event.target.files[0];
+
+	// remove everything
+	for (let i = 0; i < 4; i++) {
+		let children = divs[i].children;
+		for (let j = children.length-2; j >= 0; j--) {
+			children[j].remove();
+		}
+	}
+
+	// add new elements
+	let reader = new FileReader();
+	reader.addEventListener("load", (event) => {
+		let i = 0;
+		event.target.result.split("\n").forEach((area) => {
+			if (area != "") {
+				area.split("\t").forEach((text) => { add(i).value = text })
+			}
+			i++;
+		})
+	});
+	reader.readAsText(file);
 }
 
 function restore() {
 	for (let i = 0; i < 4; i++) {
 		let todo = localStorage.getItem(i);
 		if (todo != null && todo != "") {
-			todo.split("\t").forEach((text) => {add(i).value = text});
+			todo.split("\t").forEach((text) => {add(i).value = text });
 		}
 	}
 	savep();
@@ -91,7 +122,7 @@ function add(i) {
 }
 
 function remove(i, elt) {
-	elt.parentNode.removeChild(elt);
+	elt.remove();
 	todo[i].splice(todo[i].indexOf(elt), 1);
 	unsavep();
 }
