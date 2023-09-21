@@ -115,10 +115,11 @@ function add(i) {
 	let elt = document.createElement("div");
 	elt.className = "todo";
 	elt.innerHTML = "<textarea></textarea>";
-	elt.addEventListener("dblclick", () => {remove(i, elt)});
 	todo[i].push(elt);
 	divs[i].insertBefore(elt, divs[i].lastChild);
+
 	elt.children[0].focus();
+	unsavep();
 	return elt.children[0];
 }
 
@@ -126,6 +127,13 @@ function remove(i, elt) {
 	elt.remove();
 	todo[i].splice(todo[i].indexOf(elt), 1);
 	unsavep();
+}
+
+function handleClick(event) {
+	if (event.target.tagName == "TEXTAREA") {
+		let id = event.target.parentNode.parentNode.id;
+		remove(parseInt(id[1]), event.target.parentNode);
+	}
 }
 
 function init() {
@@ -154,5 +162,6 @@ function init() {
 
 	restore();
 	document.body.addEventListener("keyup", unsavep);
+	document.body.addEventListener("dblclick", handleClick);
 	window.setInterval(update, 5000);
 }
