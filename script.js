@@ -1,11 +1,27 @@
 let divs = [];
 let todo = {0: [], 1: [], 2: [], 3: []};
-let selectdiv, helpdiv, footerdiv;
+let selectdiv, helpdiv, footerdiv, statep;
 
-let saved = true;
+let saved;
 
 function _export() {
-	
+	update(); // save to use pre-formatted localStorage data
+	string = "";
+	for (let i = 0; i < 4; i++) {
+		string += localStorage.getItem(i);
+		if (i < 3) {
+			string += "\n";
+		}
+	}
+	let file = new Blob([string], {type: "text/plain"});
+
+	let a = document.createElement("a");
+	a.href = URL.createObjectURL(file);
+	a.download = "JSToList export.jst";
+	a.style.display = "none";
+	document.body.appendChild(a); // FF support
+	a.click();
+	a.remove();
 }
 
 function _import() {
@@ -19,6 +35,19 @@ function restore() {
 			todo.split("\t").forEach((text) => {add(i).value = text});
 		}
 	}
+	savep();
+}
+
+function savep() {
+	saved = true;
+	statep.innerHTML = "All saved";
+	statep.className = "ok";
+}
+
+function unsavep() {
+	saved = false;
+	statep.innerHTML = "*Save scheduled*";
+	statep.className = "";
 }
 
 function update() {
@@ -27,7 +56,7 @@ function update() {
 			let children = divs[i].children;
 			let string = "";
 			for (let j = 0; j < children.length-1; j++) {
-				string += children[j].children[0].value.replace("\t", "    ");
+				string += children[j].children[0].value.replace("\t", "    ").replace("\n", " ");
 				if (j < children.length-2) {
 					string += "\t";
 				}
@@ -35,8 +64,8 @@ function update() {
 			localStorage.setItem(i, string);
 		}
 
-		saved = true;
 		lastSave = Date.now();
+		savep();
 		console.log("Saved to local storage");
 	}
 }
@@ -64,7 +93,7 @@ function add(i) {
 function remove(i, elt) {
 	elt.parentNode.removeChild(elt);
 	todo[i].splice(todo[i].indexOf(elt), 1);
-	saved = false;
+	unsavep();
 }
 
 function init() {
@@ -73,6 +102,7 @@ function init() {
 	selectdiv = document.getElementById("selected");
 	helpdiv = document.getElementById("help");
 	footerdiv = document.getElementById("footer");
+	statep = document.getElementById("state");
 
 	let text = ["More urgent, less important - <strong>DELEGATE</strong>",
 				"Less urgent, less important - <strong>DELETE/MOVE</strong>",
@@ -90,8 +120,7 @@ function init() {
 		divs.push(div.lastChild);
 	}
 
-	console.log(localStorage);
 	restore();
-	document.body.addEventListener("keyup", () => {saved = false});
+	document.body.addEventListener("keyup", unsavep);
 	window.setInterval(update, 5000);
 }
