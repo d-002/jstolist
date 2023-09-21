@@ -1,6 +1,6 @@
 let divs = [];
 let todo = {0: [], 1: [], 2: [], 3: []};
-let selectdiv, helpdiv, footerdiv, dragdiv, statep;
+let selectdiv, helpdiv, infodiv, footerdiv, dragdiv, statep;
 
 let mousePos = [0, 0];
 let interval;
@@ -38,6 +38,11 @@ function _export() {
 }
 
 function _import() {
+	if (localStorage.getItem("importok") == null) {
+		infodiv.style.display = "block";
+		return;
+	}
+
 	let input = document.createElement("input");
 	input.style.display = "none";
 	document.body.appendChild(input);
@@ -79,6 +84,9 @@ function restore() {
 		if (todo != null && todo != "") {
 			todo.split("\t").forEach((text) => {add(i).value = text });
 		}
+	}
+	if (localStorage.getItem("helpok") == null) {
+		showHelp();
 	}
 	savep();
 }
@@ -124,6 +132,12 @@ function hideHelp() {
 	helpdiv.style = "";
 }
 
+function hideInfo() {
+	infodiv.style = "";
+	localStorage.setItem("importok", 1);
+	_import();
+}
+
 function add(i) {
 	let elt = document.createElement("div");
 	elt.className = "todo";
@@ -149,18 +163,8 @@ function handleRemove(event) {
 	}
 }
 
-function handleDragDropClick(event) {
-	if (dragging) {
-		let bound = document.body.getBoundingClientRect();
-		let i = 2*(mousePos[0] > bound.width/2) + (mousePos[1] > bound.height/2);
-		add(i).value = dragdiv.innerHTML;
-
-		window.clearInterval(interval);
-		interval = null;
-		dragdiv.innerHTML = "";
-		dragdiv.style = "";
-		dragging = false;
-	} else {
+function handleDragClick(event) {
+	if (!dragging) {
 		if (event.target.tagName == "TEXTAREA") {
 			dragdiv.innerHTML = event.target.value;
 
@@ -173,6 +177,20 @@ function handleDragDropClick(event) {
 	}
 }
 
+function handleDropClick(event) {
+	if (dragging) {
+		let bound = document.body.getBoundingClientRect();
+		let i = 2*(mousePos[0] > bound.width/2) + (mousePos[1] > bound.height/2);
+		add(i).value = dragdiv.innerHTML;
+
+		window.clearInterval(interval);
+		interval = null;
+		dragdiv.innerHTML = "";
+		dragdiv.style = "";
+		dragging = false;
+	}
+}
+
 function updateDrag() {
 	dragdiv.style = "display: flex; --x: "+mousePos[0]+"; --y: "+mousePos[1];
 }
@@ -182,6 +200,7 @@ function init() {
 	let right = document.getElementById("right");
 	selectdiv = document.getElementById("selected");
 	helpdiv = document.getElementById("help");
+	infodiv = document.getElementById("import-info");
 	footerdiv = document.getElementById("footer");
 	dragdiv = document.getElementById("drag");
 	statep = document.getElementById("state");
@@ -204,8 +223,9 @@ function init() {
 
 	restore();
 	document.body.addEventListener("keyup", (event) => {if (event.key.length == 1) unsavep()});
-	document.body.addEventListener("tripleclick", handleRemove);
-	document.body.addEventListener("dblclick", handleDragDropClick);
+	document.body.addEventListener("auxclick", handleRemove);
+	document.body.addEventListener("click", handleDropClick);
+	document.body.addEventListener("dblclick", handleDragClick);
 	window.addEventListener("mousemove", updateMousePos);
 	window.setInterval(autosave, 5000);
 }

@@ -197,7 +197,7 @@ h1 {
 	margin: 5px;
 }
 
-#footer a, #help a {
+#footer a, .popup a {
 	width: 50px;
 	padding: 4px;
 	text-align: center;
@@ -212,7 +212,7 @@ h1 {
 	text-decoration: none;
 }
 
-#help a {
+.popup a {
 	display: block;
 	width: 70px;
 	padding: 6px;
@@ -222,7 +222,7 @@ h1 {
 #footer a:hover, #help a:hover { border: 1px solid #777 }
 #footer a:active, #help a:active { background-color: #999 }
 
-#help, #import-info {
+.popup {
 	display: none;
 	position: fixed;
 	top: 0;
@@ -233,7 +233,7 @@ h1 {
 	backdrop-filter: blur(3px);
 }
 
-#help>div, #import-info>div {
+.popup>div {
 	position: fixed;
 	top: 50%;
 	left: 50%;
@@ -244,7 +244,7 @@ h1 {
 	background-color: white;
 }
 
-#help p {
+.popup p {
 	font-family: calibri;
 }
 
