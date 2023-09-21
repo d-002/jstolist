@@ -18,7 +18,7 @@ function updateMousePos(evt) {
 }
 
 function _export() {
-	update(); // save to use pre-formatted localStorage data
+	autosave(); // save to use pre-formatted localStorage data
 	string = "";
 	for (let i = 0; i < 4; i++) {
 		string += localStorage.getItem(i);
