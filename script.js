@@ -5,14 +5,14 @@ let todo = {0: [], 1: [], 2: [], 3: []};
 let selectdiv, helpdiv, footerdiv;
 
 let date = new Date(Date.now() + 5184000000); // expires in 60 days
-let cookieEnd = "; expires=" + date.toGMTString() + "; path=/"
+let cookieEnd = "; expires=" + date.toGMTString()
 let preferences = {};
 
 function deleteAllCookies() {
   var cookies = document.cookie.split(";");
 
   for (var i = 0; i < cookies.length; i++) {
-    document.cookie = cookies[i].split("=")[0] + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/jstolist";
+    document.cookie = cookies[i].split("=")[0] + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
   }
 }
 
