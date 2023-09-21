@@ -12,6 +12,15 @@ function _import() {
 	
 }
 
+function restore() {
+	for (let i = 0; i < 4; i++) {
+		let todo = localStorage.getItem(i);
+		if (todo != null && todo != "") {
+			todo.split("\t").forEach((text) => {add(i).value = text});
+		}
+	}
+}
+
 function update() {
 	if (!saved) {
 		for (let i = 0; i < 4; i++) {
@@ -37,7 +46,6 @@ function showHelp() {
 }
 
 function hideHelp() {
-	preferences["helpok"] = 1;
 	localStorage.setItem("helpok", 1);
 	helpdiv.style = "";
 }
@@ -50,6 +58,7 @@ function add(i) {
 	todo[i].push(elt);
 	divs[i].insertBefore(elt, divs[i].lastChild);
 	elt.children[0].focus();
+	return elt.children[0];
 }
 
 function remove(i, elt) {
@@ -64,9 +73,6 @@ function init() {
 	selectdiv = document.getElementById("selected");
 	helpdiv = document.getElementById("help");
 	footerdiv = document.getElementById("footer");
-
-	document.body.addEventListener("keyup", () => {saved = false});
-	console.log(localStorage);
 
 	let text = ["More urgent, less important - <strong>DELEGATE</strong>",
 				"Less urgent, less important - <strong>DELETE/MOVE</strong>",
@@ -84,5 +90,8 @@ function init() {
 		divs.push(div.lastChild);
 	}
 
+	console.log(localStorage);
+	restore();
+	document.body.addEventListener("keyup", () => {saved = false});
 	window.setInterval(update, 5000);
 }

@@ -11,6 +11,6 @@ To delete a block, double-click it.
 
 You can drag and drop blocks into different areas. You can't reorder them inside a certain area.
 
-Your data is safely saved in cookies, which makes them necessary for this website to work. By continuing to use this website, you agree to their use.
+Your data is safely saved in local storage, though by erasing it you will also erase your data.
 
 You can export the content of the page if necessary, for example to export them to another device. To do that, you can also import a pre-exported file.
