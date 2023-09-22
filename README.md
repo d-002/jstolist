@@ -9,7 +9,7 @@ To add a task, click the + button in the desired area. You will be able to edit 
 
 You can drag and drop blocks into different areas. To do this, you must double click on a block to select it, then click once again to drop it.
 
-You can reorder blocks inside a certain area by selecting and placing a block you want to be put first. To delete a block, click it using the right or middle button.
+You can reorder blocks inside a certain area by selecting and placing a block you want to be placed last. To delete a block, click it using the right or middle button.
 
 Your data is safely saved in local storage, hence clearing browser data will also erase your data on this website.
 
