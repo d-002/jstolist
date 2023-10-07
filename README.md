@@ -1,5 +1,5 @@
 # jstolist
-Javascript Todo list
+Javascript Eisenhower matrix (todo list)
 
 This Javascript todo list makes organizing tasks easier!
 
