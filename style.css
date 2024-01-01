@@ -92,7 +92,7 @@ span strong {
 	background-color: rgba(255, 255, 255, 0.5);
 }
 
-textarea, #drag {
+textarea {
 	overflow: hidden;
 	resize: none;
 	min-width: 20px;
@@ -261,17 +261,3 @@ code {
 	background-color: #f0f0f0;
 	color: #f6a;
 }
-
-#drag {
-	display: none;
-	position: fixed;
-	top: var(--y);
-	left: var(--x);
-	transform: translate(-50%, -50%);
-
-	width: 180px;
-	height: 60px;
-	align-items: center;
-	justify-content: center;
-}
-

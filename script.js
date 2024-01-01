@@ -1,6 +1,6 @@
 let divs = [];
 let todo = {0: [], 1: [], 2: [], 3: []};
-let selectdiv, helpdiv, infodiv, footerdiv, dragdiv, statep;
+let helpdiv, infodiv, footerdiv, statep;
 
 let mousePos = [0, 0];
 let interval;
@@ -142,6 +142,7 @@ function add(i) {
 	let elt = document.createElement("div");
 	elt.className = "todo";
 	elt.innerHTML = "<textarea></textarea>";
+	elt.draggable = "true";
 	todo[i].push(elt);
 	divs[i].insertBefore(elt, divs[i].lastChild);
 
@@ -163,46 +164,39 @@ function handleRemove(event) {
 	}
 }
 
-function handleDragClick(event) {
-	if (!dragging) {
-		if (event.target.tagName == "TEXTAREA") {
-			dragdiv.innerHTML = event.target.value;
+function dragStart(e) {
+	for(let i = 0; i < 4; i++) if (Array.from(divs[i].children).includes(e.target)) {
+		e.target.id = i;
+		break;
+	}
+	e.dataTransfer.setData("text/plain", e.target.id);
+	e.dataTransfer.setData("text/html", e.target.children[0].value);
+}
 
-			let id = event.target.parentNode.parentNode.id;
-			remove(parseInt(id[1]), event.target.parentNode);
+function dragOver(e) {
+	if (e.target) e.preventDefault();
+}
 
-			interval = window.setInterval(updateDrag, 16);
-			dragging = true;
+function drop(e) {
+	let id = e.dataTransfer.getData("text/plain");
+	elt = document.getElementById(id);
+	for(let i = 0; i < 4; i++) {
+		if (e.target == divs[i] || e.target == divs[i].parentNode) {
+			remove(parseInt(id), elt);
+			e.target.id = "";
+			elt.remove();
+			add(i).value = e.dataTransfer.getData("text/html");
+			return;
 		}
 	}
-}
-
-function handleDropClick(event) {
-	if (dragging) {
-		let bound = document.body.getBoundingClientRect();
-		let i = 2*(mousePos[0] > bound.width/2) + (mousePos[1] > bound.height/2);
-		add(i).value = dragdiv.innerHTML;
-
-		window.clearInterval(interval);
-		interval = null;
-		dragdiv.innerHTML = "";
-		dragdiv.style = "";
-		dragging = false;
-	}
-}
-
-function updateDrag() {
-	dragdiv.style = "display: flex; --x: "+mousePos[0]+"; --y: "+mousePos[1];
 }
 
 function init() {
 	let left = document.getElementById("left");
 	let right = document.getElementById("right");
-	selectdiv = document.getElementById("selected");
 	helpdiv = document.getElementById("help");
 	infodiv = document.getElementById("import-info");
 	footerdiv = document.getElementById("footer");
-	dragdiv = document.getElementById("drag");
 	statep = document.getElementById("state");
 
 	let text = ["More urgent, less important - <strong>DELEGATE</strong>",
@@ -223,9 +217,10 @@ function init() {
 
 	restore();
 	document.body.addEventListener("keyup", (event) => {if (event.key.length == 1) unsavep()});
-	document.body.addEventListener("auxclick", handleRemove);
-	document.body.addEventListener("click", handleDropClick);
-	document.body.addEventListener("dblclick", handleDragClick);
+	document.body.addEventListener("dblclick", handleRemove);
+	document.body.addEventListener("dragstart", dragStart);
+	document.body.addEventListener("dragover", dragOver);
+	document.body.addEventListener("drop", drop);
 	window.addEventListener("mousemove", updateMousePos);
 	window.setInterval(autosave, 5000);
 }
